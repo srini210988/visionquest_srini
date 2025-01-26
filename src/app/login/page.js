@@ -26,6 +26,8 @@ export default function Login() {
     // Decode the credential to get user info
     const userInfo = credential;
     setUser(userInfo);
+    console.log(response);
+    router.push('/home');
   };
 
   const handleLoginFailure = (error) => {
