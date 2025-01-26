@@ -1,0 +1,96 @@
+import { Button } from "@/components/ui/button"
+
+export default function GradientButtons() {
+  return (
+    <div className="space-y-4">
+      {/* Basic Linear Gradient */}
+      <Button 
+        className="bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600"
+      >
+        Blue to Purple Gradient
+      </Button>
+
+      {/* Diagonal Gradient */}
+      <Button 
+        className="bg-gradient-to-br from-green-400 via-teal-500 to-blue-500 text-white hover:opacity-90"
+      >
+        Green to Blue Diagonal Gradient
+      </Button>
+
+      {/* Intense Color Gradient */}
+      <Button 
+        className="bg-gradient-to-r from-pink-500 to-red-500 text-white hover:from-pink-600 hover:to-red-600"
+      >
+        Pink to Red Gradient
+      </Button>
+
+      {/* Subtle Gradient with Opacity */}
+      <Button 
+        variant="outline"
+        className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 hover:from-gray-200 hover:to-gray-300"
+      >
+        Subtle Gray Gradient
+      </Button>
+
+      {/* Custom Multi-Color Gradient */}
+      <Button 
+        className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-90"
+      >
+        Multi-Color Gradient
+      </Button>
+    </div>
+  )
+}
+
+
+gmail login integration with nextjs
+
+
+/*Tab*/
+'use client'
+
+import React, { useState } from 'react'
+import { cn } from '@/lib/utils'
+
+export default function Tabs({ 
+  tabs, 
+  defaultActiveTab = 0, 
+  className 
+}) {
+  const [activeTab, setActiveTab] = useState(defaultActiveTab)
+
+  return (
+    <div className={cn('w-full max-w-4xl mx-auto', className)}>
+      {/* Tab Navigation */}
+      <div 
+        role="tablist" 
+        className="flex space-x-2 border-b border-gray-200 dark:border-gray-700 mb-4"
+      >
+        {tabs.map((tab, index) => (
+          <button
+            key={index}
+            role="tab"
+            aria-selected={activeTab === index}
+            onClick={() => setActiveTab(index)}
+            className={cn(
+              'px-4 py-2 text-sm font-medium rounded-t-lg transition-all duration-300',
+              activeTab === index 
+                ? 'bg-sky-800 text-primary-foreground' 
+                : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Content */}
+      <div 
+        role="tabpanel" 
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6"
+      >
+        {tabs[activeTab].content}
+      </div>
+    </div>
+  )
+}
