@@ -10,16 +10,31 @@ import { Moon, MoonIcon, Sun, BellDot, View } from "lucide-react"
 import { useActionState } from 'react';
 import { fadeInEffect } from '../components/fadein'
 import Image from "next/image"
+import { GoogleOAuthProvider,GoogleLogin} from "@react-oauth/google";
 
 export default function Login() { 
   const router = useRouter();
-   
+  const [user, setUser] = useState(null);
   const callAuth = (event) => { 
     router.push('/home');
   }
 
+  // Callback function for successful Google login
+  const handleLoginSuccess = (response) => {
+    // Use the response to get user info
+    const { credential } = response;
+    // Decode the credential to get user info
+    const userInfo = credential;
+    setUser(userInfo);
+  };
+
+  const handleLoginFailure = (error) => {
+    console.log("Login failed", error);
+  };
+
   
   return (
+    <GoogleOAuthProvider clientId="67850878315-urami5ham01p0itt5qhhjibh7kqrukdj.apps.googleusercontent.com">
     <div className={`fadein-container ${fadeInEffect()} flex flex-col items-center justify-center min-h-screen p-2`}> 
 
       <div className='space-y-4 font-black h-96 p-0 gap-4 text-center'>
@@ -27,12 +42,12 @@ export default function Login() {
         <div className='text-4xl text-sky-800'>Vision Quest</div>
       </div>
 
-      
-
-      <div className="flex justify-center space-y-4 p-2 bg-slate-100 rounded-md w-100 md:w-1/3 lg:w-1/4" onClick={callAuth}>
-      <div className="p-2 px-0"><Image src={`${process.env.PATH}/gmail-ico.png`} alt="Sign In" width={36} height={36} /></div>
-       <div className='text-sm font-black px-2'>Sign in with Google</div>
-      </div>
+      <GoogleLogin
+          onSuccess={handleLoginSuccess}
+          onError={handleLoginFailure}
+        />
+    
     </div>
+    </GoogleOAuthProvider>
   )
 }
