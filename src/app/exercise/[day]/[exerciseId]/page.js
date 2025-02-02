@@ -6,6 +6,25 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { exerciseData } from '../../../data/excercise-data'
 import { ChevronLeft, Play } from 'lucide-react'
 
+// Generate all possible static params
+export function generateStaticParams() {
+  // Create an array of all possible day and exercise combinations
+  const days = Array.from({ length: 25 }, (_, i) => (i + 1).toString())
+  
+  const exercises = [
+    'eye-1', 'eye-2', 'eye-3',
+    'neck-1', 'neck-2', 'neck-3',
+    // Add all possible exercise IDs
+  ]
+
+  // Generate all combinations
+  return days.flatMap(day => 
+    exercises.map(exerciseId => ({
+      day,
+      exerciseId
+    }))
+  )
+}
 
 export default async function ExerciseDetailPage({ 
   params 

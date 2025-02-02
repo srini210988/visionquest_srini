@@ -6,6 +6,13 @@ import { exerciseData } from '../../data/excercise-data'
 import { notFound } from 'next/navigation'
 import { ChevronLeft, Play } from 'lucide-react'
 
+// Generate all possible static params
+export function generateStaticParams() {
+  // Create an array of all possible day values
+  return Array.from({ length: 25 }, (_, i) => ({
+    day: (i + 1).toString()
+  }))
+}
 export default function DayExercisesPage({ params }) {
   const dayKey = `day-${params.day}`
   console.log(dayKey);
