@@ -11,7 +11,7 @@ export const ProgressProvider = ({ children }) => {
   const [progress, setProgress] = useState(() => {
    
     // Initialize from localStorage or default values
-    const savedProgress = localStorage.getItem('exerciseProgress')
+    const savedProgress = "20";//localStorage.getItem('exerciseProgress')
     
     return savedProgress 
       ? JSON.parse(savedProgress)
