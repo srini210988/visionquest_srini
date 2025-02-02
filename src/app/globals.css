@@ -153,6 +153,9 @@ footer>div li>a{
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+.font-size-shadow{
+  box-shadow: 2px 2px 3px #ccc
+}
 @media (width < 40rem) { 
   .tab-active-line::after{
     left: 15px;

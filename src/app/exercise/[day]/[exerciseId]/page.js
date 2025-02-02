@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { exerciseData } from '../../../data/excercise-data'
-import { ChevronLeft, Play } from 'lucide-react'
+import { ChevronLeft, Play,ALargeSmall } from 'lucide-react'
 
 // Generate all possible static params
 export function generateStaticParams() {
@@ -31,6 +31,7 @@ export default async function ExerciseDetailPage({
 }) {
   const dayKey = `day-${ params.day}`;
   const exercise = exerciseData[dayKey]?.find(ex => ex.id === params.exerciseId)
+  let updateFontSize = 'text-xs md:text-sm';
 
   if (!exercise) {
     return (
@@ -86,13 +87,18 @@ export default async function ExerciseDetailPage({
 
           {/* Steps Card */}
           <Card>
-            <CardHeader>
-              <CardTitle className="text-xl md:text-2xl">Exercise Steps</CardTitle>
+            <CardHeader className="grid grid-cols-2 items-center">
+              <CardTitle className="text-md md:text-2xl">Exercise Steps</CardTitle>
+              <div className='fontSizeButtons flex justify-end items-center'>
+                <ALargeSmall size={28} className='rounded-full bg-sky-800  text-slate-50 font-size-shadow p-2'/>
+                <ALargeSmall size={32} className='rounded-full bg-white-600  font-size-shadow p-2'/>
+                <ALargeSmall size={38} className='rounded-full bg-white-600  font-size-shadow p-2' />
+              </div>
             </CardHeader>
             <CardContent>
               <ol className="list-decimal list-inside space-y-2">
                 {exercise.steps.map((step, index) => (
-                  <li key={index} className="text-muted-foreground">
+                  <li key={index} className={`text-muted-foreground ${updateFontSize}`}>
                     {step}
                   </li>
                 ))}
