@@ -8,11 +8,18 @@ const ProgressContext = createContext()
 
 export const ProgressProvider = ({ children }) => {
   
+  const [savedProgress, setLocalProgress] = useState(null);
   const [progress, setProgress] = useState(() => {
    
     // Initialize from localStorage or default values
-    const savedProgress = localStorage.getItem('exerciseProgress')
     
+    
+    if(localStorage.getItem('exerciseProgress') != undefined){
+      setLocalProgress(localStorage.getItem('exerciseProgress'));
+    } 
+    
+    
+
     return savedProgress 
       ? JSON.parse(savedProgress)
       : {
