@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+
 import React, { createContext, useState, useContext, useEffect } from 'react'
 
  
@@ -10,16 +10,8 @@ export const ProgressProvider = ({ children }) => {
   
   const [progress, setProgress] = useState(() => {
    
-    // Initialize from localStorage or default values]
-    const [savedProgress, setStreak] = useState(0)
-
-  useEffect(() => {
-    // Safely access localStorage only on the client-side
-    const savedStreak = localStorage.getItem('exerciseProgress')
-    if (savedStreak) {
-      setStreak(parseInt(savedStreak, 10))
-    }
-  }, [])
+    // Initialize from localStorage or default values
+    const savedProgress = localStorage.getItem('exerciseProgress')
     
     return savedProgress 
       ? JSON.parse(savedProgress)
