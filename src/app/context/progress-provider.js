@@ -10,8 +10,16 @@ export const ProgressProvider = ({ children }) => {
   
   const [progress, setProgress] = useState(() => {
    
-    // Initialize from localStorage or default values
-    const savedProgress = "20";//localStorage.getItem('exerciseProgress')
+    // Initialize from localStorage or default values]
+    const [savedProgress, setStreak] = useState(0)
+
+  useEffect(() => {
+    // Safely access localStorage only on the client-side
+    const savedStreak = localStorage.getItem('exerciseProgress')
+    if (savedStreak) {
+      setStreak(parseInt(savedStreak, 10))
+    }
+  }, [])
     
     return savedProgress 
       ? JSON.parse(savedProgress)
