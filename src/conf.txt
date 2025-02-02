@@ -1,0 +1,7 @@
+h1 title - text-xl md:text-2xl
+body title - text-md md:text-xl
+
+button:
+text -  text-slate-50 
+bg - bg-emerald-400
+hover - hover:bg-sky-800

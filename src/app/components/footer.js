@@ -1,5 +1,5 @@
 'use client'
-import {House,ChartSpline,Settings, MonitorPlay} from "lucide-react"
+import {House,ChartSpline,Settings, MonitorPlay, Activity} from "lucide-react"
 import Link from "next/link";
 import {usePathname } from 'next/navigation'
 export function Footer({ children }){
@@ -19,8 +19,9 @@ export function Footer({ children }){
 
                     <li>
                         <Link href="/videos" className={`inline-flex items-center ${isActive("/videos")}`}>
-                        <div> <MonitorPlay /></div>
-                        <div className="footer-txt">Videos</div>
+                        <div> 
+                        <Activity /></div>
+                        <div className="footer-txt">Exercise</div>
                         </Link>
                     </li>
 

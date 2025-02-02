@@ -5,7 +5,7 @@ const repositoryName = 'vision_quest'; // Replace with your repo name
 
 const nextConfig = {
   // Enable static export
-  output: 'export',
+ // output: 'export',
   
   // Configure base path for GitHub Pages
   basePath: isGitHubPages ? `/${repositoryName}` : '',
