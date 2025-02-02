@@ -14,9 +14,9 @@ export const ProgressProvider = ({ children }) => {
     // Initialize from localStorage or default values
     
     
-    if(localStorage.getItem('exerciseProgress') != undefined){
+    /*if(localStorage.getItem('exerciseProgress') != undefined){
       setLocalProgress(localStorage.getItem('exerciseProgress'));
-    } 
+    } */
     
     
 
