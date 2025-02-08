@@ -10,12 +10,10 @@ import { Moon, MoonIcon, Sun, BellDot, View } from "lucide-react"
 import { useActionState } from 'react';
 import { fadeInEffect } from '../components/fadein'
 import Image from "next/image"
-import { GoogleOAuthProvider,GoogleLogin} from "@react-oauth/google";
-import fileOperations from "../components/file-handler"
+import { GoogleOAuthProvider,GoogleLogin} from "@react-oauth/google"; 
 
 export default function Login() { 
-  console.log("Current working directory:", process.cwd());
-  fileOperations();
+  console.log("Current working directory:", process.cwd()); 
   console.log("file operation done");
   const router = useRouter();
   const [user, setUser] = useState(null);
