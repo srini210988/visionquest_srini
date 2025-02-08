@@ -1,4 +1,3 @@
-'use client'
 import Layout from '../components/layout';
 import Tabs from "../components/tabs"
 import ListComponent, { CompactListComponent } from '../components/list-component'
