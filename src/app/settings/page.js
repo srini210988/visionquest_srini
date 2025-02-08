@@ -9,9 +9,10 @@ export default function Page() {
             <h2 className="text-left font-black">SETTINGS</h2>
         </div>
         <div className="flex settings-container flex-col items-start">
-        <Switch size="sm" label="Set Reminder" icon="AlarmClockPlus"/>
         <Switch size="sm" label="Enable Notification"  />
-        <Switch size="sm" label="Theme Dark Mode" icon="Palette"/>
+        {/*<Switch size="sm" label="Set Reminder" icon="AlarmClockPlus"/>
+        <Switch size="sm" label="Enable Notification"  />
+        <Switch size="sm" label="Theme Dark Mode" icon="Palette"/>*/}
         </div>
     </Layout>);
 }

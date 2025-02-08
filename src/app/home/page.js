@@ -1,18 +1,14 @@
 import Layout from '../components/layout';
 import Tabs from "../components/tabs"
 import ListComponent, { CompactListComponent } from '../components/list-component'
-import HomeBannerCarousel from '../components/home-banner' 
-import fileOperations from '../components/file-handler'
+import HomeBannerCarousel from '../components/home-banner'  
 export const viewport = {
     width : 'device-width', 
     initialScale:1,
     maximumScale:1,
     userScalable:false
   } 
-export default function Page() {
-    console.log("before file write"); 
-    fileOperations();
-    console.log("after file write");
+export default function Page() { 
     const tabContent = [{
         label : 'New',
         content : (<><ListComponent heading="Ongoing Activities"/></>)

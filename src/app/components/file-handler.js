@@ -3,6 +3,14 @@ import path from 'path';
 
 export default async function fileOperations() {
   try {
+    fs.accessSync(path.join(process.cwd(), '/public/'), fs.constants.W_OK);
+    console.log('Directory is writable'+path.join(process.cwd(), '/public/'));
+  } catch (err) {
+    console.log('Directory is writable'+path.join(process.cwd(), '/public/'));
+    console.error('Directory is not writable:', err);
+  }
+
+  try {
     // Define file paths
     const inputFilePath = path.join(process.cwd(), '/public/input.txt');
     const outputFilePath = path.join(process.cwd(), '/public/output.txt');

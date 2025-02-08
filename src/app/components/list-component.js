@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { ChevronRight,CirclePlay } from 'lucide-react'
 import { Progress } from '@/components/ui/progress'
+import { useRouter } from 'next/navigation'
 import applicationConfiguration from '../../../app.config'
 
 
@@ -67,8 +68,10 @@ function ListItem({
   status 
 }) {
 
+  const router = useRouter();
  const handleNavigateAndPlayVideo = (vID) =>{
     console.log("hi"+vID);
+    router.push("/exercise?id="+vID+"&format=all");
   }
   console.log(process.env.PATH)
   return (

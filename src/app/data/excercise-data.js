@@ -1,9 +1,9 @@
   export const exerciseData = {
-    'day-1': [
+    'steps': [
       {
-        id: 'eye-1',
+        id: '1',
         name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
+        videoUrl: '/videos/all/sample-5s.mp4',
         steps: [
           'Step 1: Rotate Eyes start',
           'Step 2: Rotate Eyes partial',
@@ -12,313 +12,47 @@
         ]
       },
       {
-        id: 'eye-2',
+        id: '2',
         name: 'Eye Rotate 2',
-        videoUrl: '/placeholder.svg?height=400&width=600',
+        videoUrl: '/videos/all/sample-5s.mp4',
         steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
+          'Step 1: Rotate Eyes start 2',
+          'Step 2: Rotate Eyes partial 2',
+          'Step 3: Rotate Eyes in progress 2',
+          'Step 4: Rotate Eyes complete 2',
         ]
       },
       {
-        id: 'eye-3',
+        id: '3',
         name: 'Eye Rotate 3',
-        videoUrl: '/placeholder.svg?height=400&width=600',
+        videoUrl: '/videos/all/sample-5s.mp4',
         steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
+          'Step 1: Rotate Eyes start 3',
+          'Step 2: Rotate Eyes partial 3',
+          'Step 3: Rotate Eyes in progress 3',
+          'Step 4: Rotate Eyes complete 3',
         ]
       },
       {
-        id: 'eye-4',
+        id: '4',
         name: 'Eye Rotate 4',
-        videoUrl: '/placeholder.svg?height=400&width=600',
+        videoUrl: '/videos/all/sample-5s.mp4',
         steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      }
-    ],
-    'day-2': [
-      {
-        id: 'eye-1',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
+          'Step 1: Rotate Eyes start 4',
+          'Step 2: Rotate Eyes partial 4',
+          'Step 3: Rotate Eyes in progress 4',
+          'Step 4: Rotate Eyes complete 4',
         ]
       },
       {
-        id: 'eye-2',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
+        id: '5',
+        name: 'Eye Rotate 5',
+        videoUrl: '/videos/all/sample-5s.mp4',
         steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-1',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-2',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      }
-    ],
-    'day-3': [
-      {
-        id: 'eye-1',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-2',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-1',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-2',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      }
-    ],
-    'day-4': [
-      {
-        id: 'eye-1',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-2',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-1',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-2',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      }
-    ],
-    'day-5': [
-      {
-        id: 'eye-1',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-2',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-1',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-2',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      }
-    ],
-    'day-6': [
-      {
-        id: 'eye-1',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-2',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-1',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-2',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      }
-    ],
-    'day-7': [
-      {
-        id: 'eye-1',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-2',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ]
-      },
-      {
-        id: 'eye-1',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
-        ],
-        difficulty:'Medium'
-      },
-      {
-        id: 'eye-2',
-        name: 'Eye Rotate',
-        videoUrl: '/placeholder.svg?height=400&width=600',
-        steps: [
-          'Step 1: Rotate Eyes start',
-          'Step 2: Rotate Eyes partial',
-          'Step 3: Rotate Eyes in progress',
-          'Step 4: Rotate Eyes complete',
+          'Step 1: Rotate Eyes start 5',
+          'Step 2: Rotate Eyes partial 5',
+          'Step 3: Rotate Eyes in progress 5',
+          'Step 4: Rotate Eyes complete 5',
         ]
       }
     ]
