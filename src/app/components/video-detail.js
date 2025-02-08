@@ -5,12 +5,14 @@ import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft,ALargeSmall,Play, Pause, Volume2, VolumeX } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
+import ThumbnailList from '../components/thumbnail-list'
 
 
 export default function VideoDetail() { 
   //  console.log(useSearchParams().get('id'));
     const searchParams = useSearchParams();
     const dayKey = "steps";
+    const exConst = exerciseData;
     const exercise = exerciseData[dayKey]?.find(ex => ex.id === searchParams.get("id"))
     let updateFontSize = 'text-xs md:text-sm';
     const videoRef = useRef(null)
@@ -50,6 +52,10 @@ export default function VideoDetail() {
     }
     return (
       <div>
+
+        <ThumbnailList exerciseData={exConst.steps}/>
+
+
       <div className="container mx-auto ">
       <div className="flex items-center mb-6">
           <h1 className="text-xl md:text-2xl font-bold">{exercise.name}</h1>
