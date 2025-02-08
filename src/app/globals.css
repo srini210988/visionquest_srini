@@ -156,6 +156,9 @@ footer>div li>a{
 .font-size-shadow{
   box-shadow: 2px 2px 3px #ccc
 }
+.list-videos{
+  border: 1px solid #dbf1fd;
+}
 @media (width < 40rem) { 
   .tab-active-line::after{
     left: 15px;

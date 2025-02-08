@@ -3,71 +3,85 @@
 import Image from 'next/image'
 import { ChevronRight,CirclePlay } from 'lucide-react'
 import { Progress } from '@/components/ui/progress'
+import applicationConfiguration from '../../../app.config'
+
 
 
 // Sample data for the list
 const listData = [
   {
     id: 1,
-    title: 'Eye Excercise - Day1',
+    title: 'Eye Excercise - Excercise 1',
     description: 'Modern web solutions using Next.js and React',
-    image: '/images/thumb1.jpg',
+    videoPath: '/videos/all/sample-5s.mp4',
     tag: '',
+    status: 'Inprogress',
     progress: 20
   },
   {
     id: 2,
-    title: 'Eye Excercise - Day2',
+    title: 'Eye Excercise - Excercise 2',
     description: 'Intuitive and responsive mobile application interfaces',
-    image: '/images/thum2.png',
+    videoPath: '/videos/all/sample-5s.mp4',
     tag: '',
-    progress: 10
+    status: 'Not Started',
+    progress: 0
   },
   {
     id: 3,
-    title: 'Eye Excercise - Day3',
+    title: 'Eye Excercise - Excercise 3',
     description: 'Scalable and secure cloud infrastructure',
-    image: '/images/thumb3.webp',
-    progress: 70
+    videoPath: '/videos/all/sample-5s.mp4',
+    status: 'Completed',
+    progress: 100
 
   },
   {
     id: 4,
-    title: 'Eye Excercise - Day1',
+    title: 'Eye Excercise - Excercise 4',
     description: 'Modern web solutions using Next.js and React',
-    image: '/images/thumb1.jpg',
+    videoPath: '/videos/all/sample-5s.mp4',
     tag: '',
+    status: 'Inprogress',
     progress: 20
   },
   {
     id: 5,
-    title: 'Eye Excercise - Day2',
+    title: 'Eye Excercise - Excercise 5',
     description: 'Intuitive and responsive mobile application interfaces',
-    image: '/images/thum2.png',
+    videoPath: '/videos/all/sample-5s.mp4',
     tag: '',
+    status: 'Inprogress',
     progress: 10
   }
 ]
 
 // List Item Component
 function ListItem({ 
+  id,
   title, 
   description, 
-  image, 
+  videoPath, 
   tag,
-  progress 
+  progress,
+  status 
 }) {
+
+ const handleNavigateAndPlayVideo = (vID) =>{
+    console.log("hi"+vID);
+  }
+  console.log(process.env.PATH)
   return (
-    <div className="flex items-center space-x-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 group">
+    <div className="flex items-center space-x-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 group list-videos">
       {/* Image */}
       <div className="flex-shrink-0">
-        <Image 
-          src={process.env.PATH+image} 
+        <video 
+          src={videoPath}
           alt={title} 
           width={100} 
           height={100} 
           className="w-10 h-10 md:w-20 md:h-20 lg:w-20 lg:h-20 object-cover rounded-lg"
-        />
+        ></video>
       </div>
       
       {/* Content */}
@@ -85,14 +99,17 @@ function ListItem({
       { /*<p className="text-sm text-gray-500 dark:text-gray-400 truncate">
           {description}
         </p> */}
-       {progress &&  <div className='flex items-center md:flex-col md:items-start lg:flex-col lg:items-start'>
+       {progress!=null &&  <div className='flex items-center md:flex-col md:items-start lg:flex-col lg:items-start'>
             <Progress value={progress} className="w-1/4 bg-sky-800 h-1 "  data-state="intermediate"/> 
-            <small className='px-1 text-xs md:text-sm lg:text-sm font-bold'>{progress}% Finished</small>
+            <small className='px-1 text-xs md:text-sm lg:text-sm font-bold'>{progress}% <small><b></b></small></small>
         </div>}
+        <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+         <b className='text-slate-900'>Status: </b> <span className={`${status=="Inprogress" ? "text-amber-600": status=="Completed" ? "text-green-600":""}`}>{status}</span>
+        </p>
       </div>
       
       {/* Action Icon */}
-      <div> 
+      <div onClick={()=>handleNavigateAndPlayVideo(id)}> 
         <CirclePlay 
           className="text-gray-400 group-hover:text-blue-500 transition-colors" 
           size={24} 

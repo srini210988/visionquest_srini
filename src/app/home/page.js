@@ -2,6 +2,7 @@ import Layout from '../components/layout';
 import Tabs from "../components/tabs"
 import ListComponent, { CompactListComponent } from '../components/list-component'
 import HomeBannerCarousel from '../components/home-banner'
+import fileOperations from '../components/file-handler'
 export const viewport = {
     width : 'device-width', 
     initialScale:1,
@@ -9,6 +10,7 @@ export const viewport = {
     userScalable:false
   } 
 export default function Page() {
+    fileOperations();
     const tabContent = [{
         label : 'New',
         content : (<><ListComponent heading="Ongoing Activities"/></>)
@@ -26,9 +28,8 @@ export default function Page() {
         content : (<><ListComponent heading="Liked Videos"/></>)
     }];
     return (<Layout>
-        <HomeBannerCarousel/>
         <div className="flex justify-center items-center"> 
-                <Tabs tabs={tabContent} />
+            <ListComponent heading="Today's Excercise"/>
         </div>
     </Layout>);
 }
