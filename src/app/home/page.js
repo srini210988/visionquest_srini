@@ -1,7 +1,7 @@
 import Layout from '../components/layout';
 import Tabs from "../components/tabs"
 import ListComponent, { CompactListComponent } from '../components/list-component'
-import HomeBannerCarousel from '../components/home-banner'
+import HomeBannerCarousel from '../components/home-banner' 
 import fileOperations from '../components/file-handler'
 export const viewport = {
     width : 'device-width', 
@@ -9,7 +9,7 @@ export const viewport = {
     maximumScale:1,
     userScalable:false
   } 
-export default function Page() {
+export default function Page() { 
     fileOperations();
     const tabContent = [{
         label : 'New',

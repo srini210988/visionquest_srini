@@ -76,7 +76,7 @@ function ListItem({
       {/* Image */}
       <div className="flex-shrink-0">
         <video 
-          src={videoPath}
+          src={process.env.PATH+videoPath}
           alt={title} 
           width={100} 
           height={100} 
