@@ -18,7 +18,7 @@ export function Footer({ children }){
                     </li>
 
                     <li>
-                        <Link href="/videos" className={`inline-flex items-center ${isActive("/videos")}`}>
+                        <Link href="/exercise?id=1&format=all" className={`inline-flex items-center ${isActive("/exercise")}`}>
                         <div> 
                         <Activity /></div>
                         <div className="footer-txt">Exercise</div>

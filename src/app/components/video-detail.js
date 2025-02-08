@@ -137,7 +137,7 @@ export default function VideoDetail() {
               <CardContent>
                 <ol className="list-decimal list-inside space-y-2">
                   {exercise.steps.map((step, index) => (
-                    <li key={index} className={`text-muted-foreground ${(activeIndex == 1)?updateFontSize:(activeIndex == 2)?"text-sm md:text-lg":"text-md md:text-xl"}`}>
+                    <li key={index} className={`text-muted-foreground ${(activeIndex == 1)?updateFontSize:(activeIndex == 2)?"text-sm md:text-lg":"text-xl md:text-2xl"}`}>
                       {step}
                     </li>
                   ))}
