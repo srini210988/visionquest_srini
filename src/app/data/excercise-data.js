@@ -14,7 +14,7 @@
       {
         id: '2',
         name: 'Eye Rotate 2',
-        videoUrl: '/videos/all/sample-5s.mp4',
+        videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
         steps: [
           'Step 1: Rotate Eyes start 2',
           'Step 2: Rotate Eyes partial 2',
@@ -25,7 +25,7 @@
       {
         id: '3',
         name: 'Eye Rotate 3',
-        videoUrl: '/videos/all/sample-5s.mp4',
+        videoUrl: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
         steps: [
           'Step 1: Rotate Eyes start 3',
           'Step 2: Rotate Eyes partial 3',

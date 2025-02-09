@@ -1,13 +1,19 @@
 'use client' 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { exerciseData } from '../data/excercise-data'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft,ALargeSmall,Play, Pause, Volume2, VolumeX } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import ThumbnailList from '../components/thumbnail-list'
+import CircleTimer from '../components/circle-timer'
 
-
+// Utility function to format time
+const formatTime = (seconds) => {
+  const mins = Math.floor(seconds / 60)
+  const secs = Math.floor(seconds % 60)
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+}
 export default function VideoDetail() { 
   //  console.log(useSearchParams().get('id'));
     const searchParams = useSearchParams();
@@ -16,15 +22,62 @@ export default function VideoDetail() {
     const exercise = exerciseData[dayKey]?.find(ex => ex.id === searchParams.get("id"))
     let updateFontSize = 'text-xs md:text-sm';
     const videoRef = useRef(null)
+    const childRef = useRef();
     const [isPlaying, setIsPlaying] = useState(false)
     const [isMuted, setIsMuted] = useState(false)
     const [progress, setProgress] = useState(0)
     const [activeIndex, setActiveIndex] = useState(1)
     const [fSize, setFsize] = useState('text-xs md:text-sm');
+    const [duration, setDuration] = useState(0)
+    const [currentId, setCurrentId] = useState(1);
+    const [test,setTest] = useState(0);
   
     const fontToggle = (index) =>{
         setActiveIndex(index);
     }
+    const handleLoadedMetadata = () => {
+      if (videoRef.current) {
+        const videoDuration = videoRef.current.duration
+        setDuration(Math.round(videoDuration)) 
+      } 
+    };
+
+    const fetchData = (queryParam) => {
+console.log("fetchData");
+    setProgress(0)
+    setIsMuted(false)
+    setIsPlaying(false)
+    setDuration(0)
+    setCurrentId(queryParam);
+    };
+    useEffect(() => {
+      console.log("previousId"+currentId);
+        fetchData(searchParams.get("id"));
+    }, [searchParams.get("id")]); // This will trigger the effect whenever the query parameters change
+  
+
+    useEffect(() => {
+      console.log(duration);
+    }, [duration]);
+    // Method to get video duration
+      /*let handleLoadedMetadata = () => {
+        console.log("meta data");
+       // setTest(20);
+        console.log(test);
+        if (videoRef.current) {
+          const videoDuration = videoRef.current.duration
+          setDuration(Math.round(videoDuration))
+          console.log('Video Duration:',duration)
+        }
+
+        
+    useEffect(() => {
+      console.log("Count on mount:", test); // Might log 0 even after trying to update
+      setTest(5); // This will schedule an update but won't affect the first log
+      console.log(test);
+    }, []);
+      }*/
+
     const togglePlay = () => {
       if (videoRef.current) {
         if (isPlaying) {
@@ -32,6 +85,9 @@ export default function VideoDetail() {
         } else {
           videoRef.current.play()
         }
+        console.log("before child invoke");
+        childRef.current.toggleTimer();
+        console.log("after child invoke");
         setIsPlaying(!isPlaying)
       }
     }
@@ -51,12 +107,14 @@ export default function VideoDetail() {
       }
     }
     return (
-      <div>
+      <>
+      { currentId == searchParams.get("id") && <div className='flex flex-col md:flex-col-reverse'>
 
-        <ThumbnailList exerciseData={exConst.steps}/>
+<ThumbnailList exerciseData={exConst.steps}/>
 
 
-      <div className="container mx-auto ">
+      <div className="container mx-auto my-5">
+        
       <div className="flex items-center mb-6">
           <h1 className="text-xl md:text-2xl font-bold">{exercise.name}</h1>
         </div>
@@ -64,7 +122,7 @@ export default function VideoDetail() {
           {/* Video/Image Section */}
           <Card className="h-fit">
              <CardContent className="relative p-0">
-              <div className="rounded-lg h-64">
+              <div className="rounded-lg">
                
                 <div className="max-w-2xl mx-auto p-0 bg-background shadow-lg rounded-lg">
         <div className="relative">
@@ -72,7 +130,8 @@ export default function VideoDetail() {
             ref={videoRef}
             onTimeUpdate={handleTimeUpdate}
             className="w-full rounded-t-lg"
-            src={process.env.PATH+exercise.videoUrl}  
+            src={process.env.PATH+exercise.videoUrl} 
+            onLoadedMetadata={handleLoadedMetadata} 
           >
             Your browser does not support the video tag.
           </video>
@@ -101,7 +160,7 @@ export default function VideoDetail() {
             >
               {isPlaying ? <Pause /> : <Play />}
             </Button>
-  
+           {duration > 0 && <CircleTimer duration={duration} ref={childRef}/>}
             <Button 
               variant="ghost" 
               size="icon" 
@@ -155,6 +214,8 @@ export default function VideoDetail() {
         </div>
       </div>
       </div>
+}
+</>
     )
 }
 

@@ -23,7 +23,7 @@ const listData = [
     id: 2,
     title: 'Eye Excercise - Excercise 2',
     description: 'Intuitive and responsive mobile application interfaces',
-    videoPath: '/videos/all/sample-5s.mp4',
+    videoPath: 'https://www.w3schools.com/html/mov_bbb.mp4',
     tag: '',
     status: 'Not Started',
     progress: 0
@@ -32,7 +32,7 @@ const listData = [
     id: 3,
     title: 'Eye Excercise - Excercise 3',
     description: 'Scalable and secure cloud infrastructure',
-    videoPath: '/videos/all/sample-5s.mp4',
+    videoPath: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
     status: 'Completed',
     progress: 100
 
