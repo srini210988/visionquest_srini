@@ -63,7 +63,7 @@ useEffect(()=>{
                 <div className="relative rounded-lg overflow-hidden shadow-md transition-all duration-300 group-hover:scale-105">
                   {/* Thumbnail Image */}
                   <video 
-                    src={process.env.PATH+video.videoUrl}
+                    src={(video.videoUrl.indexOf("http")!=-1)?video.videoUrl:process.env.PATH+video.videoUrl}
                     alt={video.name} 
                     className="w-full object-cover"
                     onLoadedMetadata={(e) => handleLoadedMetadata(e,index)} 

@@ -130,7 +130,7 @@ console.log("fetchData");
             ref={videoRef}
             onTimeUpdate={handleTimeUpdate}
             className="w-full rounded-t-lg"
-            src={process.env.PATH+exercise.videoUrl} 
+            src={(exercise.videoUrl.indexOf("http")!=-1)?exercise.videoUrl:process.env.PATH+exercise.videoUrl} 
             onLoadedMetadata={handleLoadedMetadata} 
           >
             Your browser does not support the video tag.
