@@ -24,7 +24,7 @@ useEffect(()=>{
 
     const playClickedVideo = (id) => {
       console.log("clicked",id);
-      router.push(`/exercise?id=${id}&format=all`);
+      router.replace(`?id=${id}&format=all`,{scroll:false});
     }
     const handleLoadedMetadata = (event,index) => {
       // if (videoRef.current) {

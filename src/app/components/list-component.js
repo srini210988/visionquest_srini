@@ -4,7 +4,9 @@ import Image from 'next/image'
 import { ChevronRight,CirclePlay } from 'lucide-react'
 import { Progress } from '@/components/ui/progress'
 import { useRouter } from 'next/navigation'
+import { exerciseData } from '../data/excercise-data'
 import applicationConfiguration from '../../../app.config'
+import {store} from '../../lib/offline-storage'
 
 
 
@@ -57,30 +59,38 @@ const listData = [
   }
 ]
 
+const formatDate = (date) => {
+  return date.toLocaleDateString("en-GB").replace(/\//g,"");
+}
 // List Item Component
 function ListItem({ 
   id,
-  title, 
+  name, 
   description, 
-  videoPath, 
+  videoUrl, 
   tag,
   progress,
   status 
 }) {
 
   const router = useRouter();
+  const storageData = store.readData("play-status",formatDate(new Date()));
+  if(storageData && storageData["id"+id]){
+    progress = storageData["id"+id].progress;
+    status = storageData["id"+id].status;
+  } 
  const handleNavigateAndPlayVideo = (vID) =>{
     console.log("hi"+vID);
     router.push("/exercise?id="+vID+"&format=all");
   }
   console.log(process.env.PATH)
   return (
-    <div className="flex items-center space-x-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 group list-videos">
+    <div className="flex items-center space-x-4 my-4 md:mx-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 group list-videos">
       {/* Image */}
       <div className="flex-shrink-0">
         <video 
-          src={(videoPath.indexOf("http") != -1)?videoPath:process.env.PATH+videoPath}
-          alt={title} 
+          src={(videoUrl.indexOf("http") != -1)?videoUrl:process.env.PATH+videoUrl}
+          alt={name} 
           width={100} 
           height={100} 
           className="w-10 h-10 md:w-20 md:h-20 lg:w-20 lg:h-20 object-cover rounded-lg"
@@ -91,7 +101,7 @@ function ListItem({
       <div className="flex-1 min-w-0">
         <div className="flex items-center space-x-2">
           <h3 className="text-sm md:text-lg lg:text-lg font-semibold text-sky-800 dark:text-white truncate">
-            {title}
+            {name}
           </h3>
           {tag && (
             <span className="px-2 py-0.5 text-xs font-medium text-blue-800 bg-blue-100 rounded-full">
@@ -102,12 +112,12 @@ function ListItem({
       { /*<p className="text-sm text-gray-500 dark:text-gray-400 truncate">
           {description}
         </p> */}
-       {progress!=null &&  <div className='flex items-center md:flex-col md:items-start lg:flex-col lg:items-start'>
-            <Progress value={progress} className="w-1/4 bg-sky-800 h-1 "  data-state="intermediate"/> 
-            <small className='px-1 text-xs md:text-sm lg:text-sm font-bold'>{progress}% <small><b></b></small></small>
+       {<div className='flex items-center'>
+            <Progress value={(progress==null)?0:progress} className="w-1/4 bg-sky-800 h-1 "  data-state="intermediate"/> 
+            <small className='px-1 text-xs md:text-sm lg:text-sm font-bold'>{(progress==null)?0:progress}% <small><b></b></small></small>
         </div>}
         <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
-         <b className='text-slate-900'>Status: </b> <span className={`${status=="Inprogress" ? "text-amber-600": status=="Completed" ? "text-green-600":""}`}>{status}</span>
+         <b className='text-slate-900'>Status: </b> <span className={`${status=="Started" ? "text-amber-600": status=="Completed" ? "text-green-600":""}`}>{status==null?"Not Started": status}</span>
         </p>
       </div>
       
@@ -123,7 +133,7 @@ function ListItem({
 }
 
 // Main List Component
-export default function ListComponent({heading, listContent=listData}) {
+export default function ListComponent({heading, listContent=exerciseData.steps}) {
   return (
     <div className="container mx-auto px-0 md:px-4 lg:px-4 py-2 md:py-2 lg:py-2">
       {heading && <h2 className="text-1xl md:text-2xl lg:text-2xl font-bold mb-6 text-gray-900 dark:text-white">
@@ -131,7 +141,7 @@ export default function ListComponent({heading, listContent=listData}) {
       </h2>}
       
       {/* List Container */}
-      <div className="space-y-4">
+      <div className="md:grid md:grid-cols-2">
         {listContent.map((item) => (
           <ListItem 
             key={item.id}

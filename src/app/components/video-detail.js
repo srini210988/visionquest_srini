@@ -4,9 +4,12 @@ import { exerciseData } from '../data/excercise-data'
 import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft,ALargeSmall,Play, Pause, Volume2, VolumeX } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams,useRouter } from 'next/navigation'
 import ThumbnailList from '../components/thumbnail-list'
 import CircleTimer from '../components/circle-timer'
+import { motion, AnimatePresence } from 'framer-motion'
+
+import {store} from '../../lib/offline-storage'
 
 // Utility function to format time
 const formatTime = (seconds) => {
@@ -14,9 +17,13 @@ const formatTime = (seconds) => {
   const secs = Math.floor(seconds % 60)
   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
 }
+const formatDate = (date) => {
+  return date.toLocaleDateString("en-GB").replace(/\//g,"");
+}
 export default function VideoDetail() { 
   //  console.log(useSearchParams().get('id'));
     const searchParams = useSearchParams();
+    const router = useRouter();
     const dayKey = "steps";
     const exConst = exerciseData;
     const exercise = exerciseData[dayKey]?.find(ex => ex.id === searchParams.get("id"))
@@ -31,13 +38,29 @@ export default function VideoDetail() {
     const [duration, setDuration] = useState(0)
     const [currentId, setCurrentId] = useState(1);
     const [test,setTest] = useState(0);
-  
+    const [opacityValue,setOpacityValue] = useState(0);
+    const today = new Date();
+    const [currentDate, setCurrentDate] = useState(formatDate(today));
+    const [seekTime, setSeekTime]=useState(0)
+    const [remainingTime, setRemainingTime] = useState(false);
+    const [status,setStatus] = useState("Not Started");
+    const [resetFlag,setResetFlag] = useState(false);
+
+    const storageData = store.readData("play-status",currentDate); 
+    const id = searchParams.get("id");
+   
     const fontToggle = (index) =>{
         setActiveIndex(index);
     }
     const handleLoadedMetadata = () => {
       if (videoRef.current) {
-        const videoDuration = videoRef.current.duration
+        if(status == "Completed"){
+          setIsPlaying(false)
+        }
+        
+        videoRef.current.currentTime = (seekTime>0)?seekTime:videoRef.current.currentTime;
+       // setDuration(0);
+        const videoDuration = videoRef.current.duration;
         setDuration(Math.round(videoDuration)) 
       } 
     };
@@ -48,10 +71,35 @@ console.log("fetchData");
     setIsMuted(false)
     setIsPlaying(false)
     setDuration(0)
-    setCurrentId(queryParam);
+    setOpacityValue(queryParam);
+  //  setCurrentId(queryParam);
     };
     useEffect(() => {
       console.log("previousId"+currentId);
+      if(storageData != undefined){
+        let test1 = Object.hasOwn(storageData,"id"+id);
+       if(Object.hasOwn(storageData,"id"+id)){
+        
+        
+       // useEffect(()=>{
+         setProgress(storageData["id"+id].progress);
+           setDuration(Math.round(storageData["id"+id].duration));
+           setSeekTime(Math.round(storageData["id"+id].durationInSec));
+           setRemainingTime(Math.round(storageData["id"+id].remainingTime));
+           setStatus(storageData["id"+id].status);
+        //},[storageData])
+      }
+      else{
+        console.log("id"+id);
+        console.log(progress);
+        console.log(duration);
+        setProgress(0)
+        setDuration(0)
+        setSeekTime(0)
+        setRemainingTime(0)
+        setStatus("Not Started")
+      }
+  }
         fetchData(searchParams.get("id"));
     }, [searchParams.get("id")]); // This will trigger the effect whenever the query parameters change
   
@@ -85,9 +133,15 @@ console.log("fetchData");
         } else {
           videoRef.current.play()
         }
-        console.log("before child invoke");
-        childRef.current.toggleTimer();
-        console.log("after child invoke");
+        if(status == "Completed" && !resetFlag){
+          videoRef.current.currentTime = 0;
+          setResetFlag(true);
+        }
+          
+       
+          console.log("before child invoke");
+          childRef.current.toggleTimer();
+          console.log("after child invoke");
         setIsPlaying(!isPlaying)
       }
     }
@@ -102,16 +156,58 @@ console.log("fetchData");
     const handleTimeUpdate = () => {
       if (videoRef.current) {
         const progressPercent = 
-          (videoRef.current.currentTime / videoRef.current.duration) * 100
+          (videoRef.current.currentTime / videoRef.current.duration) * 100;
+
+          console.log("videoRef >> "+videoRef.current.currentTime);
+          if(videoRef.current.currentTime == 0){
+            childRef.current.resetTimer();
+            setTimeout(()=>{
+            childRef.current.toggleTimer();
+          },10)
+          }
+
+            
+       
+          let status = (progressPercent == 100)?"Completed":(progressPercent == 0)?"Not Started":"Started";
+          const videoData = {
+            ["id"+searchParams.get("id")] : {
+               "status" : status,
+                "progress":Math.round(progressPercent),
+                "duration": formatTime(videoRef.current.currentTime),
+                "durationInSec":videoRef.current.currentTime,
+                "remainingTime": videoRef.current.duration - videoRef.current.currentTime
+            }
+          }
+          //store playing details
+          if(store.isKeyExist("play-status")){
+            console.log(store.isKeyExist("play-status"));
+            if(Object.hasOwn(storageData,"id"+id)){
+              if(storageData["id"+id].status != "Completed")
+              store.insertData("play-status",videoData,currentDate);
+
+            }
+            else{
+              store.insertData("play-status",videoData,currentDate);
+           }
+          }
+          else{
+            store.createData("play-status",{
+              [currentDate]: videoData
+            });
+          }
+
         setProgress(progressPercent)
+        if(progressPercent >= 100){
+          setIsPlaying(false)
+        }
       }
     }
     return (
       <>
-      { currentId == searchParams.get("id") && <div className='flex flex-col md:flex-col-reverse'>
-
-<ThumbnailList exerciseData={exConst.steps}/>
-
+      {/* currentId == searchParams.get("id") && */<div className='flex flex-col md:flex-col-reverse'>
+ 
+        
+<ThumbnailList exerciseData={exConst.steps}/> 
 
       <div className="container mx-auto my-5">
         
@@ -120,12 +216,21 @@ console.log("fetchData");
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           {/* Video/Image Section */}
+          <motion.div
+        key={`opacity-${opacityValue}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 2 }}  
+      layout>
           <Card className="h-fit">
              <CardContent className="relative p-0">
+          
               <div className="rounded-lg">
                
                 <div className="max-w-2xl mx-auto p-0 bg-background shadow-lg rounded-lg">
+             
         <div className="relative">
+      
           <video 
             ref={videoRef}
             onTimeUpdate={handleTimeUpdate}
@@ -160,7 +265,7 @@ console.log("fetchData");
             >
               {isPlaying ? <Pause /> : <Play />}
             </Button>
-           {duration > 0 && <CircleTimer duration={duration} ref={childRef}/>}
+           {duration > 0 && <CircleTimer duration={duration} remainingTime={remainingTime == 0 && status!="Completed"?duration:remainingTime} ref={childRef}/>}
             <Button 
               variant="ghost" 
               size="icon" 
@@ -170,6 +275,7 @@ console.log("fetchData");
               {isMuted ? <VolumeX /> : <Volume2 />}
             </Button>
           </div>
+          
         </div>
       </div>
                 {/*<div className="absolute inset-0 flex items-center justify-center bg-black/30">
@@ -182,13 +288,19 @@ console.log("fetchData");
                   </Button>
                 </div>*/}
               </div>
+              
             </CardContent>
           </Card>
   
+          </motion.div>
           {/* Exercise Details Section */}
           <div className="space-y-6">
            
-  
+          <motion.div
+        key={`opacity-${opacityValue}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 2 }}  >
             {/* Steps Card */}
             <Card>
               <CardHeader className="grid grid-cols-2 items-center">
@@ -209,7 +321,7 @@ console.log("fetchData");
                 </ol>
               </CardContent>
             </Card>
-   
+   </motion.div>
           </div>
         </div>
       </div>

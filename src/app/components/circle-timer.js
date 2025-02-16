@@ -5,12 +5,13 @@ import { cn } from '@/lib/utils'
 
 const CircleTimer = forwardRef(({
   duration = 30,
+  remainingTime = duration,
   size = 50,
   strokeWidth = 3,
   primaryColor = 'hsl(200.95deg 90% 27.45%)',
   secondaryColor = 'hsl(199.37deg 95.49% 73.92%)'
 },ref) => {
-  const [timeRemaining, setTimeRemaining] = useState(duration)
+  const [timeRemaining, setTimeRemaining] = useState(remainingTime)
   const [isRunning, setIsRunning] = useState(false)
   const timerRef = useRef(null)
 
@@ -30,6 +31,7 @@ const CircleTimer = forwardRef(({
         }
         setTimeRemaining(duration)
         setIsRunning(false)
+        
     }
   }));
   // Start/pause timer
@@ -109,7 +111,7 @@ const CircleTimer = forwardRef(({
             strokeWidth={strokeWidth}
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
-            className="transition-all duration-1000 ease-linear"
+            className={`${!isRunning?"":"transition-all duration-1000 ease-linear"}`}
           />
         </svg>
 
