@@ -53,7 +53,12 @@ export default function RedirectCountdown({
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(progressInterval)
+          if(sessionStorage.getItem("authUser")){
+               router.push('/home'); 
+           }
+           else{
           router.push(destination)
+        }
           return 100
         }
         return prev + (100 / (delay / 1000))

@@ -11,6 +11,10 @@ import { useActionState } from 'react';
 import { fadeInEffect } from '../components/fadein'
 import Image from "next/image"
 import { GoogleOAuthProvider,GoogleLogin} from "@react-oauth/google"; 
+import { SessionProvider } from "../context/SessionContext";
+import {jwtDecode} from "jwt-decode";
+ 
+
 
 export default function Login() { 
   console.log("Current working directory:", process.cwd()); 
@@ -27,8 +31,18 @@ export default function Login() {
     const { credential } = response;
     // Decode the credential to get user info
     const userInfo = credential;
-    setUser(userInfo);
-    console.log(response);
+    const decoded = jwtDecode(userInfo);
+    setUser({
+      id: decoded.sub,
+      name: decoded.name,
+      email: decoded.email,
+      picture: decoded.picture,
+    });
+
+    if(typeof(Storage) != undefined){
+      sessionStorage.setItem("authUser",userInfo);
+    }
+    console.log(decoded);
     router.push('/home');
   };
 
@@ -36,9 +50,16 @@ export default function Login() {
     console.log("Login failed", error);
   };
 
-  
+  if(sessionStorage.getItem("authUser")){
+ useEffect(() => {
+    router.push('/home'); // Redirect to another page
+  }, []);
+
+  return null;
+}
   return (
     <GoogleOAuthProvider clientId="67850878315-urami5ham01p0itt5qhhjibh7kqrukdj.apps.googleusercontent.com">
+    
     <div className={`fadein-container ${fadeInEffect()} flex flex-col items-center justify-center min-h-screen p-2`}> 
 
       <div className='space-y-4 font-black h-96 p-0 gap-4 text-center'>
