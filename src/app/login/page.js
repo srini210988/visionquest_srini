@@ -40,6 +40,7 @@ export default function Login() {
     });
 
     if(typeof(Storage) != undefined){
+
       sessionStorage.setItem("authUser",userInfo);
     }
     console.log(decoded);
@@ -50,13 +51,14 @@ export default function Login() {
     console.log("Login failed", error);
   };
 
-  if(sessionStorage.getItem("authUser")){
- useEffect(() => {
+ 
+ useEffect(() => { if(sessionStorage.getItem("authUser")){
     router.push('/home'); // Redirect to another page
+    return null;
+  }
   }, []);
 
-  return null;
-}
+ 
   return (
     <GoogleOAuthProvider clientId="67850878315-urami5ham01p0itt5qhhjibh7kqrukdj.apps.googleusercontent.com">
     
