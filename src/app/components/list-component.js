@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { exerciseData } from '../data/excercise-data'
 import applicationConfiguration from '../../../app.config'
 import {store} from '../../lib/offline-storage'
+import { useState,useEffect } from 'react'
 
 
 
@@ -74,11 +75,25 @@ function ListItem({
 }) {
 
   const router = useRouter();
-  const storageData = store.readData("play-status",formatDate(new Date()));
-  if(storageData && storageData["id"+id]){
-    progress = storageData["id"+id].progress;
-    status = storageData["id"+id].status;
-  } 
+  
+  const [userId,setUserId] = useState("")
+  const [storageData,setStorageData]= useState("");
+
+   
+      //get user id
+      useEffect(()=>{
+        if(typeof(Storage) != undefined){
+          setUserId(sessionStorage.getItem("userId"));
+          setStorageData(store.readData("play-status",userId));
+        }
+        console.log("User ID : "+userId)
+      },[userId])
+  if(storageData && storageData[formatDate(new Date())]){
+    if(storageData && storageData[formatDate(new Date())]["id"+id]){
+      progress = storageData[formatDate(new Date())]["id"+id].progress;
+      status = storageData[formatDate(new Date())]["id"+id].status;
+    } 
+}
  const handleNavigateAndPlayVideo = (vID) =>{
     console.log("hi"+vID);
     router.push("/exercise?id="+vID+"&format=all");

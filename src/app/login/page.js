@@ -21,6 +21,9 @@ export default function Login() {
   console.log("file operation done");
   const router = useRouter();
   const [user, setUser] = useState(null);
+  const[store,setStorage] = useState(null);
+  const[profile,setProfileStorage] = useState({});
+  const[userRegister, storeUserProfile] = useState(null);
   const callAuth = (event) => { 
     router.push('/home');
   }
@@ -38,12 +41,15 @@ export default function Login() {
       email: decoded.email,
       picture: decoded.picture,
     });
-
+ 
     if(typeof(Storage) != undefined){
 
+     
       sessionStorage.setItem("authUser",userInfo);
+      sessionStorage.setItem("userId",decoded.email);
+      setStorage(true);
     }
-    console.log(decoded);
+    console.log("decoded");
     router.push('/home');
   };
 
@@ -52,17 +58,56 @@ export default function Login() {
   };
 
  
- useEffect(() => { if(sessionStorage.getItem("authUser")){
+
+ useEffect(() => { 
+  
+  
+  if(sessionStorage.getItem("authUser")){
+  console.log("authUser")
     router.push('/home'); // Redirect to another page
-    return null;
+    // return null;
   }
   }, []);
 
+
+  useEffect(() => { 
+  
+    console.log(user)
+    if(typeof(Storage) != undefined){
+  
+      if(localStorage.getItem("userProfiles")){
+        setProfileStorage(JSON.parse(localStorage.getItem("userProfiles")));
+      }
+      else{
+        localStorage.setItem("userProfiles","");
+      }
+        
+        if(user != null && profile[user.email] == null){
+          console.log("Profile does not exist.");
+          profile[user.email] = { 
+            name: user.name,
+            email: user.email,
+            picture: user.picture,
+            creationDate: new Date()
+          }
+  
+          localStorage.setItem("userProfiles",JSON.stringify(profile));
+          console.log(profile);
+        }
+        else{
+          console.log("Profile is already availble: ");
+        }
+      
+    }
+    
+    }, [user]);
+
  
   return (
-    <GoogleOAuthProvider clientId="67850878315-urami5ham01p0itt5qhhjibh7kqrukdj.apps.googleusercontent.com">
+    <>
+   {sessionStorage.getItem("authUser") == null && <GoogleOAuthProvider clientId="67850878315-urami5ham01p0itt5qhhjibh7kqrukdj.apps.googleusercontent.com">
     
-    <div className={`fadein-container ${fadeInEffect()} flex flex-col items-center justify-center min-h-screen p-2`}> 
+    <div className={`fadein-container flex flex-col items-center justify-center min-h-screen p-2`}> 
 
       <div className='space-y-4 font-black h-96 p-0 gap-4 text-center'>
         <div><View className='text-sky-800 vq-view-width-height'/></div>
@@ -75,6 +120,7 @@ export default function Login() {
         />
     
     </div>
-    </GoogleOAuthProvider>
+    </GoogleOAuthProvider>}
+    </>
   )
 }

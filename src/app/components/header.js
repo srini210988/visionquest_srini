@@ -6,11 +6,12 @@ import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation'
 import {jwtDecode} from "jwt-decode";
 import Image from 'next/image'
+import Dropdown from "../components/drop-down-menu"
 
 export function Header(){
     const [user, setUser] = useState({});
     const router = useRouter();
-  
+    
      useEffect(() => {
         if(typeof("Storage") != undefined && sessionStorage.authUser != undefined){
          const decoded = jwtDecode(sessionStorage.getItem("authUser"));
@@ -27,7 +28,16 @@ export function Header(){
         }
       }, []); 
      
-   
+      function signOut(){
+       // router.push("/login");
+       console.log("signed out");
+        setUser({});
+        if(typeof(Storage) != undefined){
+
+            sessionStorage.removeItem("authUser")
+          }
+        router.push("/login");
+      }
 
     return(
         <header className="container-fluid  bg-white shadow shadow-emerald-300/20 px-4 md:px-8 lg:px-8">
@@ -39,11 +49,13 @@ export function Header(){
                 </div>
                 </div>
                 <div className="basis-1/2 vq-header-content flex flex-row-reverse space-2 items-center">
-                    <div className="w-8">{user.picture?<Image src={`${user.picture}`} className="rounded-full" width={120} height={120}/>: <CircleUserRound className="text-sky-800" />}</div>
+                    <div className="w-8">{user.picture?<Dropdown profileImage={user.picture} profileEmail={user.email} profileName={user.name} signOut={signOut}/>: <CircleUserRound className="text-sky-800" />}</div>
                     <div className="px-4"><Bell className="text-yellow-500" strokeWidth={1} fill={"hsl(45.4deg 93.39% 47.45%)"}/></div>
                     <div><Star className="text-orange-700" fill="hsl(17.5 88.3% 40.4%)"/></div>
                 </div>
             </div>
+
+           
         </header>
     )
 }

@@ -27,6 +27,7 @@ export default function VideoDetail() {
     const dayKey = "steps";
     const exConst = exerciseData;
     const exercise = exerciseData[dayKey]?.find(ex => ex.id === searchParams.get("id"))
+    const todayVideosLength = exerciseData[dayKey].length
     let updateFontSize = 'text-xs md:text-sm';
     const videoRef = useRef(null)
     const childRef = useRef();
@@ -45,10 +46,19 @@ export default function VideoDetail() {
     const [remainingTime, setRemainingTime] = useState(false);
     const [status,setStatus] = useState("Not Started");
     const [resetFlag,setResetFlag] = useState(false);
+    const [userId,setUserId] = useState(sessionStorage.getItem("userId"))
 
-    const storageData = store.readData("play-status",currentDate); 
+    const [storageData,setStorageData]= useState(store.readData("play-status",userId));
     const id = searchParams.get("id");
    
+    //get user id
+   /* useEffect(()=>{
+      if(typeof(Storage) != undefined){
+        setUserId(sessionStorage.getItem("userId"));
+        setStorageData(store.readData("play-status",userId));
+      }
+      console.log("User ID : "+storageData)
+    },[userId])*/
     const fontToggle = (index) =>{
         setActiveIndex(index);
     }
@@ -62,11 +72,14 @@ export default function VideoDetail() {
        // setDuration(0);
         const videoDuration = videoRef.current.duration;
         setDuration(Math.round(videoDuration)) 
+
+        setTimeout(()=>{
+          //childRef.current.toggleTimer();
+        },10)
       } 
     };
 
-    const fetchData = (queryParam) => {
-console.log("fetchData");
+    const fetchData = (queryParam) => { 
     setProgress(0)
     setIsMuted(false)
     setIsPlaying(false)
@@ -75,18 +88,19 @@ console.log("fetchData");
   //  setCurrentId(queryParam);
     };
     useEffect(() => {
-      console.log("previousId"+currentId);
-      if(storageData != undefined){
-        let test1 = Object.hasOwn(storageData,"id"+id);
-       if(Object.hasOwn(storageData,"id"+id)){
+      console.log("todayVideosLength"+todayVideosLength);
+      if(storageData != undefined){ 
+        if(Object.hasOwn(storageData,currentDate)){
+          Object.assign(storageData[currentDate],{totalNoOfExcercise:todayVideosLength});
+       if(Object.hasOwn(storageData[currentDate],"id"+id)){
         
         
        // useEffect(()=>{
-         setProgress(storageData["id"+id].progress);
-           setDuration(Math.round(storageData["id"+id].duration));
-           setSeekTime(Math.round(storageData["id"+id].durationInSec));
-           setRemainingTime(Math.round(storageData["id"+id].remainingTime));
-           setStatus(storageData["id"+id].status);
+         setProgress(storageData[currentDate]["id"+id].progress);
+           setDuration(Math.round(storageData[currentDate]["id"+id].duration));
+           setSeekTime(Math.round(storageData[currentDate]["id"+id].durationInSec));
+           setRemainingTime(Math.round(storageData[currentDate]["id"+id].remainingTime));
+           setStatus(storageData[currentDate]["id"+id].status);
         //},[storageData])
       }
       else{
@@ -99,33 +113,13 @@ console.log("fetchData");
         setRemainingTime(0)
         setStatus("Not Started")
       }
+    }
   }
         fetchData(searchParams.get("id"));
     }, [searchParams.get("id")]); // This will trigger the effect whenever the query parameters change
   
 
-    useEffect(() => {
-      console.log(duration);
-    }, [duration]);
-    // Method to get video duration
-      /*let handleLoadedMetadata = () => {
-        console.log("meta data");
-       // setTest(20);
-        console.log(test);
-        if (videoRef.current) {
-          const videoDuration = videoRef.current.duration
-          setDuration(Math.round(videoDuration))
-          console.log('Video Duration:',duration)
-        }
-
-        
-    useEffect(() => {
-      console.log("Count on mount:", test); // Might log 0 even after trying to update
-      setTest(5); // This will schedule an update but won't affect the first log
-      console.log(test);
-    }, []);
-      }*/
-
+    
     const togglePlay = () => {
       if (videoRef.current) {
         if (isPlaying) {
@@ -140,7 +134,8 @@ console.log("fetchData");
           
        
           console.log("before child invoke");
-          childRef.current.toggleTimer();
+          childRef.current.toggleTimer(isPlaying);
+        
           console.log("after child invoke");
         setIsPlaying(!isPlaying)
       }
@@ -158,43 +153,87 @@ console.log("fetchData");
         const progressPercent = 
           (videoRef.current.currentTime / videoRef.current.duration) * 100;
 
-          console.log("videoRef >> "+videoRef.current.currentTime);
+          console.log("videoRef >> "+progressPercent);
           if(videoRef.current.currentTime == 0){
             childRef.current.resetTimer();
             setTimeout(()=>{
-            childRef.current.toggleTimer();
+           // childRef.current.toggleTimer();
           },10)
           }
 
             
        
           let status = (progressPercent == 100)?"Completed":(progressPercent == 0)?"Not Started":"Started";
+          
           const videoData = {
+           // "sssri19@gmail.com":{
             ["id"+searchParams.get("id")] : {
                "status" : status,
                 "progress":Math.round(progressPercent),
                 "duration": formatTime(videoRef.current.currentTime),
                 "durationInSec":videoRef.current.currentTime,
                 "remainingTime": videoRef.current.duration - videoRef.current.currentTime
-            }
+          }
+          //}
           }
           //store playing details
           if(store.isKeyExist("play-status")){
-            console.log(store.isKeyExist("play-status"));
-            if(Object.hasOwn(storageData,"id"+id)){
-              if(storageData["id"+id].status != "Completed")
-              store.insertData("play-status",videoData,currentDate);
+            let playJson = JSON.parse(localStorage.getItem("play-status"));
+            console.log("playJson");
+            console.log(playJson);
 
+            if(playJson[userId] == null){
+              console.log("playJson Null value");
+            store.insertData("play-status",{
+              [userId]:{
+                 [currentDate]: videoData
+               }
+             });
+            }
+
+          if(playJson[userId]){
+            console.log("playJson Inside");
+            console.log(store.isKeyExist("play-status"));
+
+            if(storageData != null){
+              setStorageData(store.readData("play-status",userId));
+            }
+
+            if(Object.hasOwn(storageData,currentDate)){
+              Object.assign(storageData[currentDate],{totalNoOfExcercise:todayVideosLength});
+            if(Object.hasOwn(storageData[currentDate],"id"+id)){
+              console.log("currentDate status : "+storageData[currentDate]["id"+id].status)
+              if(storageData[currentDate]["id"+id].status != "Completed") {
+                Object.assign(storageData[currentDate],videoData);
+                store.insertData("play-status",storageData,userId);
+              }
+              
+             
             }
             else{
-              store.insertData("play-status",videoData,currentDate);
+              Object.assign(storageData[currentDate],videoData);
+              store.insertData("play-status",storageData,userId);
            }
           }
+          }
           else{
-            store.createData("play-status",{
-              [currentDate]: videoData
+            console.log("play else part"+ userId); 
+            Object.assign(videoData,{totalNoOfExcercise:todayVideosLength});
+            store.insertData("play-status",{
+             [userId]:{
+                [currentDate]: videoData
+              }
             });
           }
+        }
+        else{ 
+          Object.assign(videoData,{totalNoOfExcercise:todayVideosLength});
+          store.createData("play-status",{
+           [userId]:{
+              [currentDate]: videoData
+            }
+          });
+        }
 
         setProgress(progressPercent)
         if(progressPercent >= 100){
@@ -204,7 +243,7 @@ console.log("fetchData");
     }
     return (
       <>
-      {/* currentId == searchParams.get("id") && */<div className='flex flex-col md:flex-col-reverse'>
+      {storageData && <div className='flex flex-col md:flex-col-reverse'>
  
         
 <ThumbnailList exerciseData={exConst.steps}/> 

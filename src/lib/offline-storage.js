@@ -4,7 +4,7 @@ createData : (key,value) =>{
     store.createIfNoKey(key,value);
 },
 insertData : (key,value,childeKey) =>{
-    let data = JSON.parse(localStorage.getItem(key)) || [];
+    let data = JSON.parse(localStorage.getItem(key)) || []; 
    // console.log(data[childeKey]);
    if(childeKey){
         Object.assign(data[childeKey],value);

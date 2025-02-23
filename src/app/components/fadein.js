@@ -3,6 +3,7 @@ export function fadeInEffect(){
     const [fadeIn, setFadeIn] = useState(false);
 
     useEffect(()=>{
+      console.log("fadeIn");
         const timer = setTimeout(()=>{
           setFadeIn(true);
   

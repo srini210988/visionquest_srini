@@ -21,8 +21,10 @@ const CircleTimer = forwardRef(({
   const progress = 1 - timeRemaining / duration
   const strokeDashoffset = circumference * (1 - progress)
   useImperativeHandle(ref, () => ({
-     toggleTimer : () => {
-        setIsRunning(prev => !prev)
+     toggleTimer : (playOrPause) => {
+
+        console.log("playOrPause"+!playOrPause);
+        setIsRunning(!playOrPause)
     },
      // Reset timer
     resetTimer : () => {
@@ -42,6 +44,7 @@ const CircleTimer = forwardRef(({
 
   // Timer logic
   useEffect(() => {
+    console.log("IsRunning >> "+isRunning)
     if (isRunning && timeRemaining > 0) {
       timerRef.current = setInterval(() => {
         setTimeRemaining(prev => {

@@ -13,7 +13,7 @@ header{
   position: fixed;
   top: 0;
   width:100%;
-  z-index: 1000
+  z-index: 40
 }
 @layer base {
   :root {
@@ -88,7 +88,7 @@ header{
   display: inline-block;
 }
 .fadein-container{
-  opacity: 0;
+  opacity: 1;
   transition: opacity 1.5s ease-in-out;
 }
 .fadein-container.fade-in-on-screen-change{
