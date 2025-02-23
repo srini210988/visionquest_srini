@@ -105,7 +105,7 @@ export default function Login() {
  
   return (
     <>
-   {sessionStorage.getItem("authUser") == null && <GoogleOAuthProvider clientId="67850878315-urami5ham01p0itt5qhhjibh7kqrukdj.apps.googleusercontent.com">
+   {/*sessionStorage.getItem("authUser") == null && */<GoogleOAuthProvider clientId="67850878315-urami5ham01p0itt5qhhjibh7kqrukdj.apps.googleusercontent.com">
     
     <div className={`fadein-container flex flex-col items-center justify-center min-h-screen p-2`}> 
 
