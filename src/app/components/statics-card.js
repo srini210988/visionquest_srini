@@ -42,16 +42,34 @@ export default function StatisticsCard() {
   const [profileData,setProfileData] = useState(null);
   const [userId,setUserId] = useState(null);
   const [playedData, getPlayedData] = useState(null)
-
+  const [streakState, setStreakState] = useState({
+    "completed":0,
+    "daystreak":0
+  });
+  const [streakFlag,setStreakFlag] = useState(false);
   let completedCount = 0;
+  let dayStreak = 0;
+  let completedVideos = 0;
+  let weekStreak = 0;
   useEffect(()=>{if(typeof(Storage)!=undefined){
     setUserId((sessionStorage.getItem("userId") || null))
   }
   //setOverAllProgress((completedDays / totalDays) * 100)
+   
   setCompletedDays(completedCount)
+  
+ 
 }); 
 
 useEffect(()=>{
+  if(userId != null){ 
+    streakData();
+    
+  }
+},[userId])
+
+useEffect(()=>{ 
+ 
   setOverAllProgress((completedDays / totalDays) * 100)
 },[completedDays])
 
@@ -76,6 +94,34 @@ useEffect(()=>{
       }
     }
   },[profileData])
+  //streak data
+  const streakData = () =>{
+    const playedRecords = store.readData("play-status",userId);
+
+    Object.entries(playedRecords).forEach(([key, value],index) => {
+      let dayStreakCount = 0;
+      let totalNoOfExcercise = 0;
+      Object.entries(playedRecords[key]).forEach(([key, value],index) => {
+        if(key != "totalNoOfExcercise" && value.status == "Completed"){
+          completedVideos += 1
+          dayStreakCount += 1
+        }
+        else if(key == "totalNoOfExcercise"){
+          totalNoOfExcercise = value;
+        }
+      });
+        if(dayStreakCount == totalNoOfExcercise){
+          dayStreak += 1
+        }
+        
+    });
+    setStreakFlag(true);
+    setStreakState({
+      "completed":completedVideos,
+      "daystreak":dayStreak
+    })
+    console.log("completedVideos >> "+completedVideos);
+  }
   // Detailed day completion tracker
   const renderDayCompletionStatus = () => {
     const playedRecords = store.readData("play-status",userId);
@@ -98,7 +144,9 @@ useEffect(()=>{
         if(playedRecords[formattedDate]!=undefined){
           let count = "";
           Object.entries(playedRecords[formattedDate]).forEach(([key, value],index) => {
-            if(key != "totalNoOfExcercise") count += index+"";
+            if(key != "totalNoOfExcercise" && value.status == "Completed"){
+              count += index+"";
+            }
           });
           console.log(count)
           progress.dailyCompletions[dayNumber]=count
@@ -254,7 +302,7 @@ useEffect(()=>{
           {/* Current Streak */}
           <div className="bg-secondary/10 rounded-lg p-4 text-center">
             <Flame className="mx-auto mb-2 text-orange-500" />
-            <div className="font-bold">{progress.currentStreak || 3}</div>
+            <div className="font-bold">{streakState.daystreak}</div>
             <div className="text-xs text-muted-foreground">Day Streak</div>  
           </div>
 
@@ -268,7 +316,7 @@ useEffect(()=>{
           {/* Completed Exercises */}
           <div className="bg-secondary/10 rounded-lg p-4 text-center">
             <CheckCircle className="mx-auto mb-2 text-green-500" />
-            <div className="font-bold">{progress.completedExercises.length || 5}</div>
+            <div className="font-bold">{streakState.completed}</div>
             <div className="text-xs text-muted-foreground">Completed Videos</div>
           </div>
         </div>
