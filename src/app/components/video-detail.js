@@ -215,6 +215,13 @@ export default function VideoDetail() {
               store.insertData("play-status",storageData,userId);
            }
           }
+          else{ 
+            console.log("play-status today");
+              //Object.assign(storageData,currentDate);
+              store.insertData("play-status",{
+                [currentDate]: videoData
+              },userId);
+          }
           }
           else{
             console.log("play else part"+ userId); 

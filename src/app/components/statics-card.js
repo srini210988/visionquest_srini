@@ -4,11 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Trophy, Flame, CheckCircle, Calendar,RotateCw, XCircle, Clock, Circle, Hourglass  } from 'lucide-react'
 import { useProgress } from '../context/progress-provider'
 import { Progress } from '@/components/ui/progress'
-import { getDays } from '../data/excercise-data'
+import { exerciseData } from '../data/excercise-data'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import WeeklyCalendarControl from "../components/calender-control"
 import { useEffect, useState } from 'react'
+import {store} from "../../lib/offline-storage"
 
 // Utility function to get week dates
 function getWeekDates(date) {
@@ -23,23 +24,38 @@ function getWeekDates(date) {
     return date
   })
 }
+function getDaysCount(){ 
+  return Array.from({length: 7}, (_, i) => `Day ${i + 1}`);
+}
 export default function StatisticsCard() {
   const { progress, resetProgress } = useProgress()
-  const totalDays = getDays().length
-  const completedDays = 3;//Object.keys(progress.dailyCompletions).length
+  const totalDays = getDaysCount().length
+  const [completedDays,setCompletedDays] = useState(0);//Object.keys(progress.dailyCompletions).length
+  const totalNoOfVideosPerDay = exerciseData.steps.length;
+  const currentDay = new Date().getDay();
   
 
   // Calculate overall progress
-  const overallProgress = (completedDays / totalDays) * 100
-
+  const [overallProgress,setOverAllProgress] = useState((completedDays / totalDays) * 100)
+  const [compeletedCount,setCompletedCount] = useState(0);
   const [childData,setChildData] = useState("");
   const [profileData,setProfileData] = useState(null);
   const [userId,setUserId] = useState(null);
+  const [playedData, getPlayedData] = useState(null)
+
+  let completedCount = 0;
   useEffect(()=>{if(typeof(Storage)!=undefined){
     setUserId((sessionStorage.getItem("userId") || null))
   }
-});
-console.log("userId : "+userId)
+  //setOverAllProgress((completedDays / totalDays) * 100)
+  setCompletedDays(completedCount)
+}); 
+
+useEffect(()=>{
+  setOverAllProgress((completedDays / totalDays) * 100)
+},[completedDays])
+
+
 
   //handle child data changes
   const handleChildDataChange = (newData) =>{ 
@@ -62,16 +78,68 @@ console.log("userId : "+userId)
   },[profileData])
   // Detailed day completion tracker
   const renderDayCompletionStatus = () => {
-    return getDays().map((day, index) => {
+    const playedRecords = store.readData("play-status",userId);
+    return childData && childData.weekStartDate.map((datestr, index)  => {
+      const date = new Date(datestr);
+      const currentDate = new Date();
+
+      const isLessThanCD = date.getTime() < currentDate.getTime()
+      const dd = String(date.getDate()).padStart(2, '0');
+      const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+      const yyyy = date.getFullYear();
+
+      const formattedDate = `${dd}${mm}${yyyy}`; 
+
+      const dayNumber = index + 1 
+      if(playedRecords){
+        console.log("playedRecords")
+        console.log(playedRecords);
+        
+        if(playedRecords[formattedDate]!=undefined){
+          let count = "";
+          Object.entries(playedRecords[formattedDate]).forEach(([key, value],index) => {
+            if(key != "totalNoOfExcercise") count += index+"";
+          });
+          console.log(count)
+          progress.dailyCompletions[dayNumber]=count
+        }
+        else{
+          progress.dailyCompletions[dayNumber]=""
+        }
+
+        const day = dayNumber-1;
+        const isCompleted = (progress.dailyCompletions[dayNumber]?.length > (totalNoOfVideosPerDay-1))?"C":
+          (progress.dailyCompletions[dayNumber]?.length==0 && isLessThanCD)?"I":
+          (progress.dailyCompletions[dayNumber]?.length==0)?"N":"P"
+   
+          if(isCompleted == "C"){
+            completedCount ++;
+          }
+      return (
+        <div 
+          key={index} 
+          className={`w-8 md:w-14 h-8 rounded-full flex items-center justify-center ${
+            isCompleted == "C"
+              ? 'bg-emerald-400 text-white' 
+              :  isCompleted == "I" ?'bg-red-500 text-white':isCompleted == "N" ?'bg-secondary text-secondary-foreground':'bg-yellow-400 text-white'
+          }`}
+          title={isCompleted == "C"? `Day ${dayNumber} Completed` : `Day ${dayNumber} Not Completed`}
+        >
+           {dayNumber}
+        </div>
+      )
+      }
+    });
+   /* return getDaysCount().map((day, index) => {
       const dayNumber = index + 1
-      progress.dailyCompletions[1]="12"
+      progress.dailyCompletions[1]="12345"
       progress.dailyCompletions[2]=""
       progress.dailyCompletions[3]=""
       progress.dailyCompletions[4]=""
       progress.dailyCompletions[5]=""
       progress.dailyCompletions[6]=""
-      progress.dailyCompletions[7]=""
-    const isCompleted = (progress.dailyCompletions[dayNumber]?.length > 4)?"C":(progress.dailyCompletions[dayNumber]?.length==0)?"N":"I"
+      progress.dailyCompletions[7]="" 
+    const isCompleted = (progress.dailyCompletions[dayNumber]?.length > (totalNoOfVideosPerDay-1))?"C":(progress.dailyCompletions[dayNumber]?.length==0)?"N":"I"
     console.log("isCompleted : "+isCompleted)
     console.log("isCompleted : "+progress.dailyCompletions[dayNumber])
       
@@ -88,7 +156,7 @@ console.log("userId : "+userId)
            {dayNumber}
         </div>
       )
-    })
+    })*/
   }
 
   // Detailed progress breakdown
@@ -103,10 +171,8 @@ console.log("userId : "+userId)
   const inputDateOnly = new Date(date.setHours(0, 0, 0, 0));
 
   // Compare both dates
-      const cDate = currentDateOnly.getTime() < inputDateOnly.getTime()?true:false;
-      console.log("progress.dailyCompletions[dayNumber]")
-      console.log(cDate)
-      console.log(completedExercises.length)
+      const cDate = currentDateOnly.getTime() < inputDateOnly.getTime()?true:false; 
+     // console.log(completedExercises.length)
       return (
         <div 
           key={index} 

@@ -25,7 +25,7 @@
       {
         id: '3',
         name: 'Eye Rotate 3',
-        videoUrl: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+        videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
         steps: [
           'Step 1: Rotate Eyes start 3',
           'Step 2: Rotate Eyes partial 3',
@@ -59,6 +59,4 @@
     // Add more days and exercises as needed
   }
   
-  export const getDays = () => { 
-    return Array.from({length: 7}, (_, i) => `Day ${i + 1}`);
-  }
+  
