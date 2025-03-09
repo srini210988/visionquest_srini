@@ -13,6 +13,7 @@ import Image from "next/image"
 import { GoogleOAuthProvider,GoogleLogin} from "@react-oauth/google"; 
 import { SessionProvider } from "../context/SessionContext";
 import {jwtDecode} from "jwt-decode";
+import { requestForToken, onMessageListener } from "../../../firebase";
  
 
 
@@ -27,6 +28,26 @@ export default function Login() {
   const callAuth = (event) => { 
     router.push('/home');
   }
+console.log("proce env")
+//console.log(firebaseConfig)
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/firebase-messaging-sw.js")
+        .then((registration) => {
+          console.log("Service Worker Registered:", registration);
+        })
+        .catch((error) => {
+          console.error("Service Worker Registration Failed:", error);
+        });
+    }
+  }, []);
+  useEffect(() => {
+    requestForToken();
+    onMessageListener().then((payload) => {
+      console.log("Notification received in foreground:", payload);
+    });
+  }, []);
 
   // Callback function for successful Google login
   const handleLoginSuccess = (response) => {

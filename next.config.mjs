@@ -14,7 +14,13 @@ const nextConfig = {
   assetPrefix: isGitHubPages ? `/${repositoryName}/` : '',
   
   // Disable server-side features not compatible with static export
-   images: { unoptimized: true } ,
+   images: { unoptimized: true, remotePatterns: [
+    {
+      protocol: 'https',
+      hostname: 'lh3.googleusercontent.com',
+     } 
+    ]
+    },
   
   // Webpack configuration for any special requirements
   webpack: (config, { isServer }) => {

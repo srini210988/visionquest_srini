@@ -57,7 +57,7 @@ export default function RedirectCountdown({
                router.push('/home'); 
            }
            else{
-          router.push(destination)
+          router.push(destination) 
         }
           return 100
         }
