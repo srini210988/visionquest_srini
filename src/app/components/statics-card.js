@@ -242,11 +242,11 @@ useEffect(()=>{
           
           <div className="flex items-center space-x-2">
            {!cDate ? <><span className="text-muted-foreground">
-              {completedExercises.length} / 5 Exercises
+              {completedExercises.length} / {totalNoOfVideosPerDay} Exercises
             </span>
             {completedExercises.length == 0 ? (
                <XCircle color="red" className="text-muted-foreground w-5 h-5" />
-            ) : completedExercises.length < 5 ?(<Clock color="orange" className="text-green-500 w-5 h-5" />) :( 
+            ) : completedExercises.length < totalNoOfVideosPerDay ?(<Clock color="orange" className="text-green-500 w-5 h-5" />) :( 
               <CheckCircle className="text-green-500 w-5 h-5" />
             )}</>
             :<><span className='text-gray-400'>Yet to start</span> <Hourglass color="gray" className="text-green-500 w-5 h-5"/></>}
@@ -309,7 +309,7 @@ useEffect(()=>{
           {/* Longest Streak */}
           <div className="bg-secondary/10 rounded-lg p-4 text-center">
             <Trophy className="mx-auto mb-2 text-yellow-500" />
-            <div className="font-bold">{progress.longestStreak || 5}</div>
+            <div className="font-bold">{progress.longestStreak || 0}</div>
             <div className="text-xs text-muted-foreground">Weekly Streak</div>
           </div>
 

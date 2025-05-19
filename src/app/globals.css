@@ -168,6 +168,10 @@ footer>div li>a{
 .list-videos{
   border: 1px solid #dbf1fd;
 }
+/*.video-detail-tag{
+  max-width: 300px;
+  margin: 0 auto;
+}*/
 @media (width < 40rem) { 
   .tab-active-line::after{
     left: 15px;

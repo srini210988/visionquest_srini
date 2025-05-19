@@ -3,15 +3,49 @@ import { FaBell } from "react-icons/fa";
 import {Bell,CircleUserRound,View, Star,Heart} from "lucide-react"
 import { RxAvatar } from "react-icons/rx";
 import { useState, useEffect } from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter,usePathname } from 'next/navigation'
 import {jwtDecode} from "jwt-decode";
 import Image from 'next/image'
 import Dropdown from "../components/drop-down-menu"
+import { requestForToken, onMessageListener, logEvent, analytics } from "../../../firebase";
 
 export function Header(){
     const [user, setUser] = useState({});
     const router = useRouter();
+    const pathname = usePathname(); 
+
+     
     
+      useEffect(() => {
+        if (analytics) {
+          console.log("analytics : ");
+          console.log(analytics)
+          console.log(pathname)
+          logEvent(analytics, 'page_view', {
+            page_path: pathname,
+          });
+        }
+      }, []);
+      //console.log(firebaseConfig)
+        useEffect(() => {
+          if ("serviceWorker" in navigator) {
+            navigator.serviceWorker
+              .register("/firebase-messaging-sw.js")
+              .then((registration) => {
+                console.log("Service Worker Registered:", registration);
+              })
+              .catch((error) => {
+                console.error("Service Worker Registration Failed:", error);
+              });
+          }
+        }, []);
+        useEffect(() => {
+          requestForToken();
+          onMessageListener().then((payload) => {
+            console.log("Notification received in foreground:", payload);
+          });
+        }, []);
+
      useEffect(() => {
         if(typeof("Storage") != undefined && sessionStorage.authUser != undefined){
          const decoded = jwtDecode(sessionStorage.getItem("authUser"));

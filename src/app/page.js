@@ -10,6 +10,7 @@ import { Moon, MoonIcon, Sun, BellDot, View } from "lucide-react"
 import {Slogan} from "./components/slogan"
 import {getSlogans} from "../lib/slogans"
 
+
 export default function RedirectCountdown({ 
   destination = '/login', 
   delay = 5000 
@@ -20,7 +21,7 @@ export default function RedirectCountdown({
   const [isVisible, setIsVisible] = useState(false)
   const [slogans, setSlogans] = useState({});
   const router = useRouter()
-
+  
   //set slogan
   useEffect(() => {
     const fetchData = async () => {

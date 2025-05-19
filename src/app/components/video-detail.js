@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { exerciseData } from '../data/excercise-data'
 import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { ChevronLeft,ALargeSmall,Play, Pause, Volume2, VolumeX } from 'lucide-react'
+import { ChevronLeft,ALargeSmall,Play, Pause, Volume2, VolumeX, Maximize2, Minimize2 } from 'lucide-react'
 import { useSearchParams,useRouter } from 'next/navigation'
 import ThumbnailList from '../components/thumbnail-list'
 import CircleTimer from '../components/circle-timer'
@@ -248,6 +248,20 @@ export default function VideoDetail() {
         }
       }
     }
+
+    const [isFullscreen, setIsFullscreen] = useState(false)
+    const videoContainerRef=useRef(null)
+    const toggleFullscreen = () => {
+      if (!document.fullscreenElement) {
+        videoContainerRef.current?.requestFullscreen().catch((err) => {
+          console.error(`Error attempting to enable fullscreen: ${err.message}`)
+        })
+        setIsFullscreen(true)
+      } else {
+        document.exitFullscreen()
+        setIsFullscreen(false)
+      }
+    }
     return (
       <>
       {storageData && <div className='flex flex-col md:flex-col-reverse'>
@@ -275,14 +289,16 @@ export default function VideoDetail() {
                
                 <div className="max-w-2xl mx-auto p-0 bg-background shadow-lg rounded-lg">
              
-        <div className="relative">
+        <div ref={videoContainerRef} className="relative">
       
           <video 
             ref={videoRef}
             onTimeUpdate={handleTimeUpdate}
-            className="w-full rounded-t-lg"
+            className="w-full rounded-t-lg video-detail-tag h-auto max-h-[calc(100vh-100px)]"
+            playsInline
             src={(exercise.videoUrl.indexOf("http")!=-1)?exercise.videoUrl:process.env.PATH+exercise.videoUrl} 
-            onLoadedMetadata={handleLoadedMetadata} 
+            onLoadedMetadata={handleLoadedMetadata}
+            preload="metadata"
           >
             Your browser does not support the video tag.
           </video>
@@ -302,7 +318,7 @@ export default function VideoDetail() {
           </div>
   
           {/* Controls */}
-          <div className="flex items-center justify-between p-4 bg-secondary/10">
+          <div className="flex items-center justify-between p-4 bg-white">
             <Button 
               variant="ghost" 
               size="icon" 
@@ -320,6 +336,9 @@ export default function VideoDetail() {
             >
               {isMuted ? <VolumeX /> : <Volume2 />}
             </Button>
+            <Button variant="ghost" size="icon" onClick={toggleFullscreen} className="text-black hover:bg-zinc-100 hover:text-zinc-900">
+            {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+          </Button>
           </div>
           
         </div>
