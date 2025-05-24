@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "visionquest-gst",
-    "visionquest": "visionquest-gst"
+    "default": "foodchart-96009",
+    "visionquest": "foodchart-96009"
   },
   "targets": {},
   "etags": {}
