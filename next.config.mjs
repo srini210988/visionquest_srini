@@ -30,6 +30,7 @@ const nextConfig = {
   
   env: {
     PATH: isGitHubPages ? `/${repositoryName}` : '',
+    EXCERCISE_DATA:'/conf/exercises/'
   }
 }
 

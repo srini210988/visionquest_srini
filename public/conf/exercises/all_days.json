@@ -1,0 +1,13 @@
+[
+    {
+    "id": "1",
+    "name": "Eye - Rotate",
+    "videoUrl": "/videos/all/demo_1.mp4",
+    "steps": [
+        "Step 1: Rotate Eyes start",
+        "Step 2: Rotate Eyes partial",
+        "Step 3: Rotate Eyes in progress",
+        "Step 4: Rotate Eyes complete"
+    ]
+    }
+]

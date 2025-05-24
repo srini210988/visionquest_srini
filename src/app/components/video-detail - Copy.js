@@ -1,6 +1,6 @@
 'use client' 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-//import { exerciseData } from '../data/excercise-data'
+import { exerciseData } from '../data/excercise-data'
 import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft,ALargeSmall,Play, Pause, Volume2, VolumeX, Maximize2, Minimize2 } from 'lucide-react'
@@ -25,10 +25,9 @@ export default function VideoDetail() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const dayKey = "steps";
-    const [exerciseData,setExerciseData] = useState(null);
-    //const exConst = exerciseData;
-    const [exercise,setExercise] = useState(null);
-    const [todayVideosLength,setTodayVideosLength]=useState(null);
+    const exConst = exerciseData;
+    const exercise = exerciseData[dayKey]?.find(ex => ex.id === searchParams.get("id"))
+    const todayVideosLength = exerciseData[dayKey].length
     let updateFontSize = 'text-xs md:text-sm';
     const videoRef = useRef(null)
     const childRef = useRef();
@@ -52,41 +51,6 @@ export default function VideoDetail() {
     const [storageData,setStorageData]= useState(store.readData("play-status",userId));
     const id = searchParams.get("id");
    
-     useEffect(() => {
-    // Attempt to fetch primary file
-    fetch(process.env.EXCERCISE_DATA+"day_"+(new Date().getDay()+1)+".json")
-      .then((res) => {
-        if (!res.ok) throw new Error("Primary file not found");
-        return res.json();
-      })
-      .catch(() => {
-        // If primary file fails, try the fallback
-        return fetch(process.env.EXCERCISE_DATA+"all_days.json")
-          .then((res) => {
-            if (!res.ok) throw new Error("Fallback file also not found");
-            return res.json();
-          });
-      })
-      .then((json) => {
-        
-        setExerciseData(json)
-
-      })
-      .catch((err) => {
-        console.error("Fetch error:", err);
-      });
-  }, []);
-
-  console.log(exerciseData);
- /* if(exerciseData){
-    setExercise(exerciseData?.find(ex => ex.id === searchParams.get("id")));
-    setTodayVideosLength(exerciseData.length);
-  }*/
-  useEffect(()=>{
-    if(!exerciseData) return;
-    setExercise(exerciseData?.find(ex => ex.id === searchParams.get("id")));
-    setTodayVideosLength(exerciseData.length);
-  },[exerciseData])
     //get user id
    /* useEffect(()=>{
       if(typeof(Storage) != undefined){
@@ -300,10 +264,10 @@ export default function VideoDetail() {
     }
     return (
       <>
-      {sessionStorage && exerciseData && exercise && <div className='flex flex-col md:flex-col-reverse'>
+      {storageData && <div className='flex flex-col md:flex-col-reverse'>
  
         
-<ThumbnailList exerciseData={exerciseData}/> 
+<ThumbnailList exerciseData={exConst.steps}/> 
 
       <div className="container mx-auto my-5">
         

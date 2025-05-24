@@ -95,10 +95,9 @@ function ListItem({
     } 
 }
  const handleNavigateAndPlayVideo = (vID) =>{
-    console.log("hi"+vID);
     router.push("/exercise?id="+vID+"&format=all");
   }
-  console.log(process.env.PATH)
+  
   return (
     <div className="flex items-center space-x-4 my-4 md:mx-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 group list-videos">
       {/* Image */}
@@ -149,6 +148,30 @@ function ListItem({
 
 // Main List Component
 export default function ListComponent({heading, listContent=exerciseData.steps}) {
+
+const [excerciseData, setExcerciseData] = useState(null);
+  useEffect(() => {
+    // Attempt to fetch primary file
+    fetch(process.env.EXCERCISE_DATA+"day_"+(new Date().getDay()+1)+".json")
+      .then((res) => {
+        if (!res.ok) throw new Error("Primary file not found");
+        return res.json();
+      })
+      .catch(() => {
+        // If primary file fails, try the fallback
+        return fetch(process.env.EXCERCISE_DATA+"all_days.json")
+          .then((res) => {
+            if (!res.ok) throw new Error("Fallback file also not found");
+            return res.json();
+          });
+      })
+      .then((json) => setExcerciseData(json))
+      .catch((err) => {
+        console.error("Fetch error:", err);
+      });
+  }, []);
+  console.log(process.env.EXCERCISE_DATA)
+console.log(excerciseData);
   return (
     <div className="container mx-auto px-0 md:px-4 lg:px-4 py-2 md:py-2 lg:py-2">
       {heading && <h2 className="text-1xl md:text-2xl lg:text-2xl font-bold mb-6 text-gray-900 dark:text-white">
@@ -157,7 +180,7 @@ export default function ListComponent({heading, listContent=exerciseData.steps})
       
       {/* List Container */}
       <div className="md:grid md:grid-cols-2">
-        {listContent.map((item) => (
+        {excerciseData && excerciseData.map((item) => (
           <ListItem 
             key={item.id}
             {...item}
